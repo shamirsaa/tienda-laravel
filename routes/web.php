@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::resource('productos', 'ProductosController');
+Route::resource('ventas', 'VentasController');

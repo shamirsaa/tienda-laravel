@@ -14,7 +14,9 @@ class ProductosController extends Controller
      */
     public function index()
     {
-        return view('productos.index');
+        $datos['productos']=productos::orderBy('id','desc')
+        ->paginate(10);
+        return view('productos.index',$datos);
     }
 
     /**
@@ -35,7 +37,9 @@ class ProductosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $producto=request()->except('_token');
+        $id=productos::insertGetId($producto);
+        return back()->with('success','Item '.$id.' created successfully!');
     }
 
     /**

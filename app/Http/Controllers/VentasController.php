@@ -14,7 +14,7 @@ class VentasController extends Controller
      */
     public function index()
     {
-        //
+        return view('store.invoice');
     }
 
     /**
@@ -24,7 +24,7 @@ class VentasController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
