@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\productos;
 use App\ventas;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,9 @@ class VentasController extends Controller
      */
     public function index()
     {
-        return view('store.invoice');
+        $productos['productos']=productos::orderBy('precio','asc')
+        ->paginate(20);
+        return view('store.index',$productos);
     }
 
     /**
@@ -24,7 +27,7 @@ class VentasController extends Controller
      */
     public function create()
     {
-        
+        return view('store.invoice');
     }
 
     /**
