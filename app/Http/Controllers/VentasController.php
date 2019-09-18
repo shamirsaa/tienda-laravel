@@ -2,87 +2,155 @@
 
 namespace App\Http\Controllers;
 
-use App\productos;
-use App\ventas;
+use App\Http\Requests\CreateventasRequest;
+use App\Http\Requests\UpdateventasRequest;
+use App\Repositories\ventasRepository;
+use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
+use Flash;
+use Response;
 
-class VentasController extends Controller
+class ventasController extends AppBaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    /** @var  ventasRepository */
+    private $ventasRepository;
+
+    public function __construct(ventasRepository $ventasRepo)
     {
-        $productos['productos']=productos::orderBy('precio','asc')
-        ->paginate(20);
-        return view('store.index',$productos);
+        $this->ventasRepository = $ventasRepo;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the ventas.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $ventas = $this->ventasRepository->all();
+
+        return view('ventas.index')
+            ->with('ventas', $ventas);
+    }
+
+    /**
+     * Show the form for creating a new ventas.
+     *
+     * @return Response
      */
     public function create()
     {
-        return view('store.invoice');
+        return view('ventas.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created ventas in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateventasRequest $request
+     *
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateventasRequest $request)
     {
-        //
+        $input = $request->all();
+
+        $ventas = $this->ventasRepository->create($input);
+
+        Flash::success('Ventas saved successfully.');
+
+        return redirect(route('ventas.index'));
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified ventas.
      *
-     * @param  \App\ventas  $ventas
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @return Response
      */
-    public function show(ventas $ventas)
+    public function show($id)
     {
-        //
+        $ventas = $this->ventasRepository->find($id);
+
+        if (empty($ventas)) {
+            Flash::error('Ventas not found');
+
+            return redirect(route('ventas.index'));
+        }
+
+        return view('ventas.show')->with('ventas', $ventas);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified ventas.
      *
-     * @param  \App\ventas  $ventas
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @return Response
      */
-    public function edit(ventas $ventas)
+    public function edit($id)
     {
-        //
+        $ventas = $this->ventasRepository->find($id);
+
+        if (empty($ventas)) {
+            Flash::error('Ventas not found');
+
+            return redirect(route('ventas.index'));
+        }
+
+        return view('ventas.edit')->with('ventas', $ventas);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified ventas in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ventas  $ventas
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @param UpdateventasRequest $request
+     *
+     * @return Response
      */
-    public function update(Request $request, ventas $ventas)
+    public function update($id, UpdateventasRequest $request)
     {
-        //
+        $ventas = $this->ventasRepository->find($id);
+
+        if (empty($ventas)) {
+            Flash::error('Ventas not found');
+
+            return redirect(route('ventas.index'));
+        }
+
+        $ventas = $this->ventasRepository->update($request->all(), $id);
+
+        Flash::success('Ventas updated successfully.');
+
+        return redirect(route('ventas.index'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified ventas from storage.
      *
-     * @param  \App\ventas  $ventas
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @throws \Exception
+     *
+     * @return Response
      */
-    public function destroy(ventas $ventas)
+    public function destroy($id)
     {
-        //
+        $ventas = $this->ventasRepository->find($id);
+
+        if (empty($ventas)) {
+            Flash::error('Ventas not found');
+
+            return redirect(route('ventas.index'));
+        }
+
+        $this->ventasRepository->delete($id);
+
+        Flash::success('Ventas deleted successfully.');
+
+        return redirect(route('ventas.index'));
     }
 }

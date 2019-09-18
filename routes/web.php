@@ -16,4 +16,10 @@ Route::get('/', function () {
 });
 
 Route::resource('productos', 'ProductosController');
-Route::resource('ventas', 'VentasController');
+// Route::resource('ventas', 'VentasController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+
+Route::resource('ventas', 'ventasController');
