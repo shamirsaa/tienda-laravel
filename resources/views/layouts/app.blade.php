@@ -25,6 +25,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 
     @yield('css')
+    <style>
+            
+            .simpleCart_items .headerRow div, .simpleCart_items .itemRow div {
+      float:left;
+      width: 20%;
+    }
+    .simpleCart_items .itemRow {
+      clear: both;
+    }
+</style>
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/simpleCart.js"></script>
+
 </head>
 
 <body class="skin-blue sidebar-mini">

@@ -83,6 +83,59 @@
   </div>
 </div>
 
+
+
+<!-- Items -->
+<span class="simpleCart_quantity"></span> items - <span class="simpleCart_total"></span> <br>
+
+<a href="javascript:;" onclick="simpleCart.add({name:'Inoculation', price: 5});return false;">
+    A inoculation for 5 &euro;</a><br />
+  <a href="javascript:;" onclick="simpleCart.add({name:'Pig', price: 20});return false;">
+    A pig for 20 &euro;</a><br />
+  <a href="javascript:;" onclick="simpleCart.add({name:'Standpipe', price: 200});return false;">
+    A standpipe for 200 &euro;</a><br />
+  <br />
+  
+  <!-- Shopping cart -->
+  <div class="simpleCart_items"></div><br />
+  
+  <!-- Checkout link -->
+  <a href="javascript:;" class="simpleCart_checkout">Donate <span class="simpleCart_total"></span> now!</a>
+
+  <!-- Initialize simpleCart -->
+  <script type="text/javascript">
+  alert("<?php echo $_GET['itemCount']; ?>");
+    simpleCart({
+      // cartColumns: [
+      //   {attr: "name", label: "Name"},
+      //   {attr: "price", label: "Preis", view: 'currency'},
+      //   {attr: "quantity", label: "Menge"},
+      //   {attr: "total", label: "Summe", view: 'currency'},
+      //   {view: "remove", text: "Remove", label: false}
+      // ],
+      checkout: {
+        type: "SendForm",
+        url: "{{url('/productos')}}",
+        method: "GET" , 
+        extra_data: {
+          hash: "PUT_YOUR_FORM_HASH_HERE" // <-- TODO
+        }
+      }
+    });
+
+    // Configure EURO as currency
+    // simpleCart.currency({
+    //   code: "COP",
+    //   name: "pesos",
+    //   symbol: " COP ",
+    //   delimiter: ".",
+    //   decimal: ",",
+    //   after: false,
+    //   accuracy: 2
+    // });
+  </script>
+
+
 </div><!-- /container -->
 
 
